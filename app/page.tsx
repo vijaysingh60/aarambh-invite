@@ -1,69 +1,239 @@
-import Image from "next/image";
+import PublicLayout from "@/components/public/PublicLayout";
+import Link from "next/link";
+import { Calendar, Clock, MapPin, Users, MessageCircle, Utensils, Sparkles } from "lucide-react";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <PublicLayout>
+      <div className="bg-[#faf8f5]">
+        {/* ─── HERO ─────────────────────────────────────────────── */}
+        <section className="relative min-h-[92vh] flex flex-col items-center justify-center overflow-hidden bg-[#1a0505] px-4 py-20">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2a0808] via-[#1a0505] to-[#0d0202]" />
+          <div className="absolute top-0 left-0 w-64 h-64 bg-[#8b1a1a] rounded-full opacity-10 blur-3xl -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#c9872a] rounded-full opacity-8 blur-3xl translate-x-1/3 translate-y-1/3" />
+          <div className="absolute top-8 left-8 opacity-20 text-[#c9872a] text-6xl select-none hidden md:block">❋</div>
+          <div className="absolute top-8 right-8 opacity-20 text-[#c9872a] text-6xl select-none hidden md:block">❋</div>
+          <div className="absolute bottom-16 left-16 opacity-15 text-[#8b1a1a] text-5xl select-none hidden lg:block">✦</div>
+          <div className="absolute bottom-16 right-16 opacity-15 text-[#8b1a1a] text-5xl select-none hidden lg:block">✦</div>
+
+          <div className="relative z-10 text-center max-w-3xl mx-auto">
+            <p className="text-[#9b7b6b] text-xs sm:text-sm tracking-[0.4em] uppercase mb-6 animate-fade-in-up">
+              University of Hyderabad · SCIS
+            </p>
+            <p className="text-[#c9872a] text-sm sm:text-base tracking-[0.6em] uppercase mb-4 animate-fade-in-up animate-delay-100">
+              You&apos;re Invited
+            </p>
+            <h1
+              className="text-[#fdf6ec] text-6xl sm:text-7xl md:text-8xl font-bold tracking-widest uppercase mb-3 animate-fade-in-up animate-delay-200"
+              style={{ fontFamily: "Georgia, serif" }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              AARAMBH
+            </h1>
+            <div className="flex items-center justify-center gap-4 my-5 animate-fade-in-up animate-delay-200">
+              <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#c9872a]" />
+              <span className="text-[#c9872a] text-lg">✦</span>
+              <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#c9872a]" />
+            </div>
+            <p className="text-[#e8d5c5] text-xl sm:text-2xl tracking-[0.3em] uppercase mb-1 animate-fade-in-up animate-delay-300">
+              MCA Freshers&apos;26
+            </p>
+            <p className="text-[#9b7b6b] text-sm sm:text-base tracking-[0.2em] uppercase mb-8 animate-fade-in-up animate-delay-300">
+              With Our Alumni
+            </p>
+            <p className="text-[#c9872a] text-base sm:text-lg italic mb-10 animate-fade-in-up animate-delay-400">
+              &ldquo;Different Batches. Same Roots.&rdquo;
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-[#e8d5c5] text-sm mb-10 animate-fade-in-up animate-delay-400">
+              <div className="flex items-center gap-2">
+                <Calendar size={16} className="text-[#c9872a]" />
+                <span>Saturday, 03 October 2026</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock size={16} className="text-[#c9872a]" />
+                <span>7:00 PM</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin size={16} className="text-[#c9872a]" />
+                <span>Amphitheatre</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/rsvp"
+                className="w-full sm:w-auto bg-[#8b1a1a] hover:bg-[#6b1010] text-white px-8 py-4 rounded font-semibold text-base uppercase tracking-widest transition-all hover:shadow-lg min-w-[220px] text-center"
+              >
+                Will You Join Us?
+              </Link>
+              <Link
+                href="/event"
+                className="w-full sm:w-auto border border-[#c9872a] text-[#c9872a] hover:bg-[#c9872a]/10 px-8 py-4 rounded font-medium text-base uppercase tracking-widest transition-all min-w-[220px] text-center"
+              >
+                View Event Details
+              </Link>
+            </div>
+          </div>
+
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[#c9872a] opacity-60 animate-bounce">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+            </svg>
+          </div>
+        </section>
+
+        {/* ─── INTRO ────────────────────────────────────────────── */}
+        <section className="max-w-3xl mx-auto px-4 py-20 text-center">
+          <p className="text-[#9b7b6b] text-xs tracking-[0.5em] uppercase mb-4">The Gathering</p>
+          <h2 className="text-[#8b1a1a] text-3xl sm:text-4xl font-bold mb-6" style={{ fontFamily: "Georgia, serif" }}>
+            One Evening. Many Memories.
+          </h2>
+          <div className="w-16 h-px bg-[#c9872a] mx-auto mb-6" />
+          <p className="text-[#5c3a2a] text-base sm:text-lg leading-relaxed">
+            AARAMBH is a celebration of beginnings — where the MCA 2025 batch and the new MCA 2026 batch
+            come together for an evening of conversation, connection, and community. This is more than an
+            event. It is the beginning of a shared journey at SCIS.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        </section>
+
+        {/* ─── EVENT DETAILS ────────────────────────────────────── */}
+        <section className="bg-[#1a0505] py-16 px-4">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-[#c9872a] text-xs tracking-[0.5em] uppercase text-center mb-8">The Details</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {[
+                { icon: <Calendar size={28} />, label: "Date", value: "Saturday, 03 October 2026" },
+                { icon: <Clock size={28} />, label: "Time", value: "7:00 PM onwards" },
+                { icon: <MapPin size={28} />, label: "Venue", value: "Amphitheatre, University of Hyderabad" },
+              ].map((item) => (
+                <div key={item.label} className="bg-[#2a0808] border border-[#3a1515] rounded-lg p-6 text-center">
+                  <div className="text-[#c9872a] mb-3 flex justify-center">{item.icon}</div>
+                  <p className="text-[#9b7b6b] text-xs uppercase tracking-widest mb-1">{item.label}</p>
+                  <p className="text-[#fdf6ec] font-medium">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── WHAT'S IN STORE ──────────────────────────────────── */}
+        <section className="max-w-5xl mx-auto px-4 py-20">
+          <div className="text-center mb-12">
+            <p className="text-[#9b7b6b] text-xs tracking-[0.5em] uppercase mb-3">The Evening</p>
+            <h2 className="text-[#8b1a1a] text-3xl sm:text-4xl font-bold" style={{ fontFamily: "Georgia, serif" }}>
+              What&apos;s in Store
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: <Users size={32} />, title: "Meet & Connect", desc: "Bridge the gap between batches. Find your mentors. Meet your juniors." },
+              { icon: <MessageCircle size={32} />, title: "Alumni Conversations", desc: "Hear from those who've walked the same corridors, faced the same exams." },
+              { icon: <Sparkles size={32} />, title: "Activities", desc: "Fun, engaging activities that bring out the best in everyone." },
+              { icon: <Utensils size={32} />, title: "Dinner & Snacks", desc: "An evening wouldn't be complete without good food and good company." },
+            ].map((item) => (
+              <div key={item.title} className="bg-white border border-[#e8d5c5] rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <div className="text-[#8b1a1a] mb-4 flex justify-center">{item.icon}</div>
+                <h3 className="text-[#1a0a0a] font-semibold text-base mb-2">{item.title}</h3>
+                <p className="text-[#9b7b6b] text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ─── MESSAGE TO SENIORS ───────────────────────────────── */}
+        <section className="bg-[#fdf6ec] border-y border-[#e8d5c5] py-20 px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-[#c9872a] text-4xl mb-6">✉</p>
+            <h2 className="text-[#8b1a1a] text-2xl sm:text-3xl font-bold mb-6" style={{ fontFamily: "Georgia, serif" }}>
+              A Message to Our Seniors
+            </h2>
+            <div className="w-12 h-px bg-[#c9872a] mx-auto mb-8" />
+            <blockquote className="text-[#5c3a2a] text-base sm:text-lg leading-relaxed italic">
+              &ldquo;You&apos;ve already walked the path we&apos;re beginning. Come back, reconnect,
+              share your stories, and make the beginning of a new batch a little more memorable.
+              Your presence is not just welcome — it matters.&rdquo;
+            </blockquote>
+            <p className="text-[#9b7b6b] text-sm mt-6">— MCA 2026, SCIS</p>
+            <Link
+              href="/rsvp"
+              className="inline-block mt-8 bg-[#8b1a1a] text-white px-8 py-3 rounded uppercase tracking-widest text-sm font-semibold hover:bg-[#6b1010] transition-colors"
+            >
+              I&apos;ll Be There
+            </Link>
+          </div>
+        </section>
+
+        {/* ─── RSVP CTA ─────────────────────────────────────────── */}
+        <section className="py-20 px-4 text-center">
+          <div className="max-w-xl mx-auto">
+            <h2 className="text-[#8b1a1a] text-3xl sm:text-4xl font-bold mb-4" style={{ fontFamily: "Georgia, serif" }}>
+              Will We See You There?
+            </h2>
+            <p className="text-[#9b7b6b] mb-8">Let us know if you&apos;re joining — it helps us plan the evening better.</p>
+            <Link
+              href="/rsvp"
+              className="inline-block bg-[#8b1a1a] text-white px-10 py-4 rounded-lg uppercase tracking-widest font-bold text-base hover:bg-[#6b1010] transition-all hover:shadow-xl hover:shadow-[#8b1a1a]/20"
+            >
+              Confirm Your Presence
+            </Link>
+          </div>
+        </section>
+
+        {/* ─── BATCHES ──────────────────────────────────────────── */}
+        <section className="bg-[#1a0505] py-16 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-[#c9872a] text-xs tracking-[0.5em] uppercase mb-4">The Community</p>
+            <h2 className="text-[#fdf6ec] text-3xl font-bold mb-10" style={{ fontFamily: "Georgia, serif" }}>
+              Meet the Batches
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {[
+                { href: "/batches/2025", year: "MCA 2025", label: "The Seniors", desc: "36 students who've already made their mark at SCIS.", badge: "Batch 2025–2027" },
+                { href: "/batches/2026", year: "MCA 2026", label: "The Freshers", desc: "The new batch, beginning their MCA journey at SCIS.", badge: "Batch 2026–2028" },
+              ].map((b) => (
+                <Link key={b.href} href={b.href} className="bg-[#2a0808] border border-[#3a1515] rounded-lg p-8 hover:border-[#8b1a1a] transition-all group">
+                  <p className="text-[#c9872a] text-xs uppercase tracking-widest mb-2">{b.badge}</p>
+                  <h3 className="text-[#fdf6ec] text-2xl font-bold mb-1 group-hover:text-[#c9872a] transition-colors" style={{ fontFamily: "Georgia, serif" }}>{b.year}</h3>
+                  <p className="text-[#9b7b6b] text-sm mb-3">{b.label}</p>
+                  <p className="text-[#e8d5c5] text-sm">{b.desc}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── SCIS CONNECT & CONTRIBUTE ─────────────────────────── */}
+        <section className="max-w-5xl mx-auto px-4 py-16 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="bg-[#fdf6ec] border border-[#e8d5c5] rounded-lg p-8">
+            <h3 className="text-[#8b1a1a] font-bold text-xl mb-2" style={{ fontFamily: "Georgia, serif" }}>SCIS Connect</h3>
+            <p className="text-[#9b7b6b] text-sm mb-4">Stay connected with the SCIS community beyond AARAMBH.</p>
+            <Link href="/scis-connect" className="text-[#8b1a1a] font-semibold text-sm hover:underline">Learn more →</Link>
+          </div>
+          <div className="bg-[#fdf6ec] border border-[#e8d5c5] rounded-lg p-8">
+            <h3 className="text-[#8b1a1a] font-bold text-xl mb-2" style={{ fontFamily: "Georgia, serif" }}>Want to Contribute?</h3>
+            <p className="text-[#9b7b6b] text-sm mb-4">Contribution is completely optional. Help us make the evening special.</p>
+            <Link href="/contribute" className="text-[#8b1a1a] font-semibold text-sm hover:underline">Contribute →</Link>
+          </div>
+        </section>
+
+        {/* ─── CONTACT ──────────────────────────────────────────── */}
+        <section className="bg-[#fdf6ec] border-t border-[#e8d5c5] py-16 px-4 text-center">
+          <h2 className="text-[#8b1a1a] text-2xl font-bold mb-2" style={{ fontFamily: "Georgia, serif" }}>Have Questions?</h2>
+          <p className="text-[#9b7b6b] mb-6 text-sm">Reach out to the organizing team</p>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+            {[
+              { name: "Shivam", phone: "9570068163", display: "95700 68163" },
+              { name: "Sahil", phone: "7814913269", display: "78149 13269" },
+              { name: "Aman", phone: "7983878932", display: "79838 78932" },
+            ].map((c) => (
+              <div key={c.name} className="text-center">
+                <p className="font-semibold text-[#1a0a0a]">{c.name}</p>
+                <a href={`tel:${c.phone}`} className="text-[#8b1a1a] hover:underline">{c.display}</a>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </PublicLayout>
   );
 }
