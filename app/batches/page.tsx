@@ -1,5 +1,6 @@
 import PublicLayout from "@/components/public/PublicLayout";
 import Link from "next/link";
+import Image from "next/image";
 import { Users, ArrowRight } from "lucide-react";
 
 export default function BatchesPage() {
@@ -74,6 +75,39 @@ export default function BatchesPage() {
                 </Link>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Dress The Theme */}
+        <section className="max-w-5xl mx-auto px-4 py-16">
+          <div className="text-center mb-10">
+            <p className="text-[#9b7b6b] text-xs tracking-[0.4em] uppercase mb-2">Event Night</p>
+            <h2 className="text-[#1a0a0a] text-3xl font-bold" style={{ fontFamily: "Georgia, serif" }}>
+              Dress The Theme
+            </h2>
+            <p className="text-[#9b7b6b] text-sm mt-2">Each batch has its own colour — wear it with pride.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { src: "/dress-senior.png", label: "Senior Batch", sub: "Maroon & Gold" },
+              { src: "/dress-batch25.png", label: "Batch 2025", sub: "All Black" },
+              { src: "/dress-batch26.png", label: "Batch 2026", sub: "Navy Blue & White" },
+            ].map(({ src, label, sub }) => (
+              <div key={src} className="rounded-xl overflow-hidden shadow-sm border border-[#e8d5c5] bg-white">
+                <Image
+                  src={src}
+                  alt={`${label} dress code`}
+                  width={600}
+                  height={900}
+                  style={{ width: "100%", height: "auto" }}
+                  className="block"
+                />
+                <div className="py-3 text-center">
+                  <p className="font-semibold text-[#1a0a0a] text-sm">{label}</p>
+                  <p className="text-[#9b7b6b] text-xs">{sub}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
