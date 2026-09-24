@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/batches", label: "Batches" },
   { href: "/scis-connect", label: "SCIS Connect" },
   { href: "/contribute", label: "Contribute" },
+  { href: "/moments", label: "Moments" },
   { href: "/contact", label: "Contact" },
 ];
 
