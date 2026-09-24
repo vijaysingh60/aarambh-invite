@@ -36,16 +36,16 @@ export default function ContributePage() {
                 Scan & Pay
               </h2>
               <div className="bg-white border border-[#e8d5c5] rounded-lg p-6 text-center">
-                <div className="bg-[#fdf6ec] border-2 border-dashed border-[#e8d5c5] rounded p-8 mb-4">
-                  <div className="w-48 h-48 mx-auto flex items-center justify-center bg-[#f5f0eb] rounded">
-                    <div className="text-center">
-                      <p className="text-[#9b7b6b] text-xs">QR Code</p>
-                      <p className="text-[#9b7b6b] text-xs mt-1">(Replace with actual QR)</p>
-                    </div>
-                  </div>
-                  <p className="text-[#9b7b6b] text-xs mt-3 italic">
-                    📌 Replace /public/contribution-qr.png with actual event QR code
-                  </p>
+                <div className="mb-4">
+                  <Image
+                    src="/contribution-qr-v2.jpeg"
+                    alt="Contribution QR Code"
+                    width={224}
+                    height={224}
+                    loading="eager"
+                    style={{ width: 224, height: "auto" }}
+                    className="mx-auto rounded"
+                  />
                 </div>
                 <div className="text-sm">
                   <p className="font-semibold text-[#1a0a0a] text-base">Kumar Shivam</p>

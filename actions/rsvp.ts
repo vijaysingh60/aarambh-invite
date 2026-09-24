@@ -3,52 +3,58 @@
 import { connectDB } from "@/lib/mongodb";
 import StudentModel from "@/models/Student";
 import RSVPModel from "@/models/RSVP";
-import { RSVPFormSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
 
 export async function submitRSVP(data: {
-  name: string;
+  name?: string;
   rollNumber: string;
-  batch: string;
-  mobile: string;
+  mobile?: string;
   email?: string;
   status: "ATTENDING" | "NOT_ATTENDING";
   notes?: string;
 }) {
-  const validated = RSVPFormSchema.safeParse(data);
-  if (!validated.success) {
-    return { success: false, error: validated.error.flatten().fieldErrors };
+  const rollNumber = data.rollNumber?.trim().toUpperCase();
+
+  if (!rollNumber || rollNumber.length < 3) {
+    return { success: false, error: { rollNumber: ["Roll number is required"] } };
+  }
+
+  if (data.status === "ATTENDING") {
+    if (!data.mobile || !/^[6-9]\d{9}$/.test(data.mobile)) {
+      return { success: false, error: { mobile: ["Please enter a valid 10-digit mobile number"] } };
+    }
   }
 
   await connectDB();
 
-  const { name, rollNumber, batch, mobile, email, status, notes } = validated.data;
+  // Auto-detect batch and name from student record if available
+  const student = await StudentModel.findOne({ rollNumber }).lean();
+  const resolvedBatch = (student as { batch?: string } | null)?.batch || "";
+  const resolvedName = data.name?.trim() || (student as { name?: string } | null)?.name || "Unknown";
 
-  const student = await StudentModel.findOne({ rollNumber: rollNumber.toUpperCase() });
-
-  const existing = await RSVPModel.findOne({ rollNumber: rollNumber.toUpperCase() });
+  const existing = await RSVPModel.findOne({ rollNumber });
 
   if (existing) {
     await RSVPModel.findByIdAndUpdate(existing._id, {
-      name,
-      batch,
-      mobile,
-      email,
-      status,
-      notes,
-      studentId: student?._id,
+      name: resolvedName,
+      batch: resolvedBatch,
+      mobile: data.mobile || "",
+      email: data.email || "",
+      status: data.status,
+      notes: data.notes || "",
+      studentId: (student as { _id?: unknown } | null)?._id,
       updatedAt: new Date(),
     });
   } else {
     await RSVPModel.create({
-      studentId: student?._id,
-      name,
-      rollNumber: rollNumber.toUpperCase(),
-      batch,
-      mobile,
-      email,
-      status,
-      notes,
+      studentId: (student as { _id?: unknown } | null)?._id,
+      name: resolvedName,
+      rollNumber,
+      batch: resolvedBatch,
+      mobile: data.mobile || "",
+      email: data.email || "",
+      status: data.status,
+      notes: data.notes || "",
       submittedAt: new Date(),
     });
   }

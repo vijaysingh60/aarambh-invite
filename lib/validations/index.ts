@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const RSVPFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  name: z.string().min(1, "Name is required").optional().or(z.literal("")),
   rollNumber: z.string().min(3, "Roll number is required"),
-  batch: z.enum(["2025", "2026"], { required_error: "Please select your batch" }),
-  mobile: z.string().regex(/^[6-9]\d{9}$/, "Please enter a valid 10-digit mobile number"),
+  batch: z.string().optional(),
+  mobile: z.string().regex(/^[6-9]\d{9}$/, "Please enter a valid 10-digit mobile number").optional().or(z.literal("")),
   email: z.string().email("Please enter a valid email").optional().or(z.literal("")),
   status: z.enum(["ATTENDING", "NOT_ATTENDING"]),
   notes: z.string().optional(),
