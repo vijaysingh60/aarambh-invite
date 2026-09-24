@@ -13,7 +13,6 @@ export const RSVPFormSchema = z.object({
 export const ContributionFormSchema = z.object({
   name: z.string().min(2, "Name is required"),
   rollNumber: z.string().optional(),
-  batch: z.string().optional(),
   amount: z.number().positive("Amount must be positive").optional(),
   transactionId: z.string().min(1, "Transaction ID is required"),
   paymentDate: z.string().min(1, "Payment date is required"),

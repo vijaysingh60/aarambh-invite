@@ -11,7 +11,6 @@ import { createAuditLog } from "@/lib/utils/audit";
 export async function submitContribution(data: {
   name: string;
   rollNumber?: string;
-  batch?: string;
   amount?: number;
   transactionId: string;
   paymentDate: string;

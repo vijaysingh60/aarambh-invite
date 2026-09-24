@@ -18,7 +18,6 @@ export default function ContributeForm() {
     const data = {
       name: fd.get("name") as string,
       rollNumber: fd.get("rollNumber") as string || undefined,
-      batch: fd.get("batch") as string || undefined,
       amount: fd.get("amount") ? Number(fd.get("amount")) : undefined,
       transactionId: fd.get("transactionId") as string,
       paymentDate: fd.get("paymentDate") as string,
@@ -54,19 +53,9 @@ export default function ContributeForm() {
         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name[0]}</p>}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-[#1a0a0a] text-sm font-medium mb-1">Roll Number</label>
-          <input name="rollNumber" className="w-full px-3 py-2.5 border border-[#e8d5c5] rounded text-sm focus:outline-none focus:border-[#8b1a1a]" placeholder="e.g. 25MCMC34" />
-        </div>
-        <div>
-          <label className="block text-[#1a0a0a] text-sm font-medium mb-1">Batch</label>
-          <select name="batch" className="w-full px-3 py-2.5 border border-[#e8d5c5] rounded text-sm focus:outline-none focus:border-[#8b1a1a] bg-white">
-            <option value="">Select</option>
-            <option value="2025">MCA 2025</option>
-            <option value="2026">MCA 2026</option>
-          </select>
-        </div>
+      <div>
+        <label className="block text-[#1a0a0a] text-sm font-medium mb-1">Roll Number</label>
+        <input name="rollNumber" className="w-full px-3 py-2.5 border border-[#e8d5c5] rounded text-sm focus:outline-none focus:border-[#8b1a1a]" placeholder="e.g. 25MCMC34" />
       </div>
 
       <div>
