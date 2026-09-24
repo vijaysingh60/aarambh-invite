@@ -58,7 +58,7 @@ export default function RSVPForm({ prefill }: Props) {
       setSubmittedStatus(choice);
       setStep("success");
     } else if (res.error) {
-      setErrors(res.error as Record<string, string[]>);
+      setErrors(res.error as unknown as Record<string, string[]>);
     }
   }
 
