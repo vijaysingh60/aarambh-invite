@@ -2,7 +2,6 @@ import PublicLayout from "@/components/public/PublicLayout";
 import ScrollReveal from "@/components/public/ScrollReveal";
 import HeroStars from "@/components/public/HeroStars";
 import Link from "next/link";
-import Image from "next/image";
 import { Calendar, Clock, MapPin, Users, MessageCircle, Utensils, Sparkles } from "lucide-react";
 
 export default function HomePage() {
@@ -141,42 +140,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ─── DRESS THE THEME ──────────────────────────────────── */}
-        <section className="bg-[#1a0505] py-16 px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
-              <p data-animate="up" className="text-[#c9872a] text-xs tracking-[0.5em] uppercase mb-3">Event Night</p>
-              <h2 data-animate="up" data-delay="100" className="text-[#fdf6ec] text-3xl sm:text-4xl font-bold" style={{ fontFamily: "Georgia, serif" }}>
-                Dress The Theme
-              </h2>
-              <p data-animate="fade" data-delay="200" className="text-[#9b7b6b] text-sm mt-3">Each batch has its own colour — wear it with pride.</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {[
-                { src: "/dress-senior.png", label: "Senior Batch", sub: "Maroon & Gold", delay: "100" },
-                { src: "/dress-batch25.png", label: "Batch 2025", sub: "All Black", delay: "250" },
-                { src: "/dress-batch26.png", label: "Batch 2026", sub: "Navy Blue & White", delay: "400" },
-              ].map(({ src, label, sub, delay }) => (
-                <div key={src} data-animate="up" data-delay={delay} className="rounded-xl overflow-hidden border border-[#3a1515]">
-                  <Image
-                    src={src}
-                    alt={`${label} dress code`}
-                    width={600}
-                    height={900}
-                    style={{ width: "100%", height: "auto" }}
-                    className="block"
-                  />
-                  <div className="py-3 text-center bg-[#2a0808]">
-                    <p className="font-semibold text-[#fdf6ec] text-sm">{label}</p>
-                    <p className="text-[#c9872a] text-xs">{sub}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ─── MESSAGE TO SENIORS ───────────────────────────────── */}
+{/* ─── MESSAGE TO SENIORS ───────────────────────────────── */}
         <section className="bg-[#fdf6ec] border-y border-[#e8d5c5] py-20 px-4">
           <div className="max-w-2xl mx-auto text-center">
             <p data-animate="fade" className="text-[#c9872a] text-4xl mb-6">✉</p>
