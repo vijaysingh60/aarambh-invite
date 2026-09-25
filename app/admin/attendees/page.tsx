@@ -17,7 +17,12 @@ async function getRSVPs(filters: { status?: string; batch?: string; search?: str
   await connectDB();
   const query: Record<string, unknown> = {};
   if (filters.status) query.status = filters.status;
-  if (filters.batch) query.batch = filters.batch;
+  if (filters.batch) {
+    const b = filters.batch.trim();
+    // Accept "25" or "2025" — match first 2 digits of rollNumber
+    const twoDigit = b.length === 4 ? b.slice(2) : b;
+    query.rollNumber = { $regex: `^${twoDigit}`, $options: "i" };
+  }
   if (filters.search) {
     query.$or = [
       { name: { $regex: filters.search, $options: "i" } },

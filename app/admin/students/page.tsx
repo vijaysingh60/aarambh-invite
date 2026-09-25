@@ -12,7 +12,11 @@ interface Props {
 async function getStudents(filters: { batch?: string; search?: string; page: number }) {
   await connectDB();
   const query: Record<string, unknown> = {};
-  if (filters.batch) query.batch = filters.batch;
+  if (filters.batch) {
+    const b = filters.batch.trim();
+    const twoDigit = b.length === 4 ? b.slice(2) : b;
+    query.rollNumber = { $regex: `^${twoDigit}`, $options: "i" };
+  }
   if (filters.search) {
     query.$or = [
       { name: { $regex: filters.search, $options: "i" } },
