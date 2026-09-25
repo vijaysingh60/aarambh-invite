@@ -1,21 +1,22 @@
 import PublicLayout from "@/components/public/PublicLayout";
-import { connectDB } from "@/lib/mongodb";
-import EventScheduleModel from "@/models/EventSchedule";
 import { Calendar, Clock, MapPin, Users, MessageCircle, Sparkles, Utensils } from "lucide-react";
 import Link from "next/link";
 
-async function getSchedule() {
-  try {
-    await connectDB();
-    const schedule = await EventScheduleModel.find({ isActive: true }).sort({ sortOrder: 1 }).lean();
-    return JSON.parse(JSON.stringify(schedule));
-  } catch {
-    return [];
-  }
-}
+const schedule = [
+  { time: "7:00 PM",  title: "Gathering" },
+  { time: "7:15 PM",  title: "Junior Rampwalk & Introduction" },
+  { time: "7:30 PM",  title: "Performances by Juniors" },
+  { time: "8:00 PM",  title: "Snacks / Starters / Refreshment" },
+  { time: "8:15 PM",  title: "Games for Juniors by 2025 Batch" },
+  { time: "9:00 PM",  title: "Performances by 2025 Batch" },
+  { time: "9:30 PM",  title: "Performances by Juniors" },
+  { time: "10:00 PM", title: "Dinner" },
+  { time: "11:00 PM", title: "Games for 2025 Batch" },
+  { time: "11:30 PM", title: "Mr & Miss Fresher" },
+  { time: "12:00 AM", title: "Highlight & to be continued..." },
+];
 
 export default async function EventPage() {
-  const schedule = await getSchedule();
 
   return (
     <PublicLayout>
@@ -87,29 +88,22 @@ export default async function EventPage() {
             <h2 className="text-[#8b1a1a] text-2xl font-bold mb-2" style={{ fontFamily: "Georgia, serif" }}>
               Evening Schedule
             </h2>
-            <p className="text-[#9b7b6b] text-sm italic">
-              * Placeholder times — subject to change. Final schedule will be announced closer to the event.
-            </p>
+            <p className="text-[#9b7b6b] text-sm italic">Saturday, 03 October 2026 · Amphitheatre</p>
           </div>
           <div className="relative">
-            <div className="absolute left-[3.5rem] top-0 bottom-0 w-px bg-[#e8d5c5]" />
+            <div className="absolute left-[8.375rem] top-0 bottom-0 w-px bg-[#e8d5c5]" />
             <div className="space-y-6">
-              {schedule.length > 0 ? schedule.map((item: { _id: string; time: string; title: string; description?: string }, idx: number) => (
-                <div key={item._id || idx} className="flex gap-4">
+              {schedule.map((item, idx) => (
+                <div key={idx} className="flex gap-4">
                   <div className="w-28 shrink-0 text-right">
                     <span className="text-[#8b1a1a] font-semibold text-sm">{item.time}</span>
                   </div>
                   <div className="w-3 h-3 rounded-full bg-[#8b1a1a] mt-1 shrink-0 relative z-10" />
                   <div className="pb-4">
                     <p className="font-semibold text-[#1a0a0a]">{item.title}</p>
-                    {item.description && <p className="text-[#9b7b6b] text-sm mt-1">{item.description}</p>}
                   </div>
                 </div>
-              )) : (
-                <div className="text-center py-8 text-[#9b7b6b]">
-                  Schedule will be updated soon. Stay tuned!
-                </div>
-              )}
+              ))}
             </div>
           </div>
         </section>
