@@ -49,15 +49,14 @@ export default function StudentTable({ students, total, page, initialFilters }: 
             className="w-full pl-9 pr-3 py-2 border border-[#e8d5c5] rounded text-sm focus:outline-none focus:border-[#8b1a1a]"
           />
         </div>
-        <select
+        <input
+          type="text"
+          placeholder="Filter by batch..."
           value={batchFilter}
           onChange={(e) => setBatchFilter(e.target.value)}
-          className="px-3 py-2 border border-[#e8d5c5] rounded text-sm bg-white focus:outline-none focus:border-[#8b1a1a]"
-        >
-          <option value="">All Batches</option>
-          <option value="2025">MCA 2025</option>
-          <option value="2026">MCA 2026</option>
-        </select>
+          onKeyDown={(e) => e.key === "Enter" && applyFilters()}
+          className="px-3 py-2 border border-[#e8d5c5] rounded text-sm focus:outline-none focus:border-[#8b1a1a] w-40"
+        />
         <button
           onClick={applyFilters}
           className="bg-[#8b1a1a] text-white px-4 py-2 rounded text-sm hover:bg-[#6b1010] flex items-center gap-2"
@@ -87,7 +86,7 @@ export default function StudentTable({ students, total, page, initialFilters }: 
                 <tr key={s._id} className="hover:bg-[#fdf9f6]">
                   <td className="px-4 py-3 font-medium text-[#1a0a0a]">{s.name}</td>
                   <td className="px-4 py-3 font-mono text-xs text-[#8b1a1a]">{s.rollNumber}</td>
-                  <td className="px-4 py-3 text-[#5c3a2a]">MCA {s.batch}</td>
+                  <td className="px-4 py-3 text-[#5c3a2a]">{s.batch ? `MCA ${s.batch}` : "—"}</td>
                   <td className="px-4 py-3 text-[#9b7b6b] text-xs max-w-[160px] truncate">{s.background || "—"}</td>
                   <td className="px-4 py-3 text-[#5c3a2a]">{s.mobile || <span className="text-[#c8b8a8]">—</span>}</td>
                   <td className="px-4 py-3 text-[#5c3a2a] text-xs">{s.email || <span className="text-[#c8b8a8]">—</span>}</td>

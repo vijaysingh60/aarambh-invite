@@ -67,15 +67,14 @@ export default function AttendeeTable({ rsvps, total, page, initialFilters }: Pr
           <option value="NOT_ATTENDING">Not Attending</option>
           <option value="PENDING">Pending</option>
         </select>
-        <select
+        <input
+          type="text"
+          placeholder="Filter by batch..."
           value={batchFilter}
           onChange={(e) => setBatchFilter(e.target.value)}
-          className="px-3 py-2 border border-[#e8d5c5] rounded text-sm focus:outline-none focus:border-[#8b1a1a] bg-white"
-        >
-          <option value="">All Batches</option>
-          <option value="2025">MCA 2025</option>
-          <option value="2026">MCA 2026</option>
-        </select>
+          onKeyDown={(e) => e.key === "Enter" && applyFilters()}
+          className="px-3 py-2 border border-[#e8d5c5] rounded text-sm focus:outline-none focus:border-[#8b1a1a] w-40"
+        />
         <button
           onClick={applyFilters}
           className="bg-[#8b1a1a] text-white px-4 py-2 rounded text-sm font-medium hover:bg-[#6b1010] transition-colors flex items-center gap-2"
@@ -112,7 +111,7 @@ export default function AttendeeTable({ rsvps, total, page, initialFilters }: Pr
                   <tr key={rsvp._id} className="hover:bg-[#fdf9f6]">
                     <td className="px-4 py-3 font-medium text-[#1a0a0a]">{rsvp.name}</td>
                     <td className="px-4 py-3 font-mono text-xs text-[#8b1a1a]">{rsvp.rollNumber}</td>
-                    <td className="px-4 py-3 text-[#5c3a2a]">MCA {rsvp.batch}</td>
+                    <td className="px-4 py-3 text-[#5c3a2a]">{rsvp.batch ? `MCA ${rsvp.batch}` : "—"}</td>
                     <td className="px-4 py-3 text-[#5c3a2a]">
                       {rsvp.mobile ? (
                         <a href={`tel:${rsvp.mobile}`} className="hover:text-[#8b1a1a]">{rsvp.mobile}</a>
