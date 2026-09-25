@@ -5,7 +5,7 @@ export interface IRSVPDoc extends Document {
   studentId?: mongoose.Types.ObjectId;
   name: string;
   rollNumber: string;
-  batch: string;
+  batch?: string;
   mobile?: string;
   email?: string;
   status: RSVPStatus;
@@ -22,7 +22,7 @@ const RSVPSchema = new Schema<IRSVPDoc>(
     studentId: { type: Schema.Types.ObjectId, ref: "Student" },
     name: { type: String, required: true, trim: true },
     rollNumber: { type: String, required: true, trim: true, uppercase: true },
-    batch: { type: String, required: true },
+    batch: { type: String, default: "" },
     mobile: { type: String, trim: true },
     email: { type: String, trim: true, lowercase: true },
     status: {
