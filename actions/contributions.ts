@@ -5,7 +5,7 @@ import ContributionModel from "@/models/Contribution";
 import StudentModel from "@/models/Student";
 import { ContributionFormSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
+import { auth, isViewer } from "@/lib/auth";
 import { createAuditLog } from "@/lib/utils/audit";
 
 export async function submitContribution(data: {
@@ -42,6 +42,7 @@ export async function updateContributionStatus(
 ) {
   const session = await auth();
   if (!session?.user) return { success: false, error: "Unauthorized" };
+  if (isViewer((session.user as { role?: string }).role)) return { success: false, error: "Unauthorized" };
 
   await connectDB();
 

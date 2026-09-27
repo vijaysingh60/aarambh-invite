@@ -4,9 +4,11 @@ import { connectDB } from "@/lib/mongodb";
 import EventSettingsModel from "@/models/EventSettings";
 import EventScheduleModel from "@/models/EventSchedule";
 import RSVPModel from "@/models/RSVP";
-import { auth } from "@/lib/auth";
+import StudentModel from "@/models/Student";
+import { auth, isViewer } from "@/lib/auth";
 import { createAuditLog } from "@/lib/utils/audit";
 import { revalidatePath } from "next/cache";
+import { deriveBatchFromRoll } from "@/lib/batch";
 
 export async function getEventSettings() {
   await connectDB();
@@ -18,6 +20,7 @@ export async function getEventSettings() {
 export async function updateEventSettings(data: Record<string, unknown>) {
   const session = await auth();
   if (!session?.user) return { success: false, error: "Unauthorized" };
+  if (isViewer((session.user as { role?: string }).role)) return { success: false, error: "Unauthorized" };
 
   await connectDB();
 
@@ -52,6 +55,7 @@ export async function getEventSchedule() {
 export async function checkInAttendee(rsvpId: string) {
   const session = await auth();
   if (!session?.user) return { success: false, error: "Unauthorized" };
+  if (isViewer((session.user as { role?: string }).role)) return { success: false, error: "Unauthorized" };
 
   await connectDB();
 
@@ -79,6 +83,7 @@ export async function getDashboardStats() {
     checkedIn,
     verifiedContributions,
     pendingContributions,
+    pendingList,
   ] = await Promise.all([
     (await import("@/models/Student")).default.countDocuments(),
     RSVPModel.countDocuments({ status: "ATTENDING" }),
@@ -86,15 +91,14 @@ export async function getDashboardStats() {
     RSVPModel.countDocuments({ checkedIn: true }),
     (await import("@/models/Contribution")).default.countDocuments({ status: "VERIFIED" }),
     (await import("@/models/Contribution")).default.countDocuments({ status: "PENDING" }),
+    (await import("@/lib/pending")).getPendingList(),
   ]);
-
-  const pending = totalStudents - attending - notAttending;
 
   return {
     totalStudents,
     attending,
     notAttending,
-    pending: Math.max(0, pending),
+    pending: pendingList.length,
     verifiedContributions,
     pendingContributions,
     checkedIn,
@@ -107,11 +111,25 @@ export async function updateRSVPStatus(
 ) {
   const session = await auth();
   if (!session?.user) return { success: false, error: "Unauthorized" };
+  if (isViewer((session.user as { role?: string }).role)) return { success: false, error: "Unauthorized" };
 
   await connectDB();
+  const roll = rollNumber.toUpperCase();
+  const student = await StudentModel.findOne({ rollNumber: roll }).lean() as { _id?: unknown; name?: string; batch?: string } | null;
+
   await RSVPModel.findOneAndUpdate(
-    { rollNumber: rollNumber.toUpperCase() },
-    { status, updatedAt: new Date() }
+    { rollNumber: roll },
+    {
+      $set: { status, updatedAt: new Date() },
+      $setOnInsert: {
+        rollNumber: roll,
+        name: student?.name || "Unknown",
+        batch: deriveBatchFromRoll(roll) || student?.batch || "",
+        studentId: student?._id,
+        submittedAt: new Date(),
+      },
+    },
+    { upsert: true }
   );
 
   await createAuditLog({

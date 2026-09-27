@@ -1,18 +1,16 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+
+const VIEWER_ALLOWED_PATHS = ["/admin/attendees", "/admin/login", "/class-login"];
 
 export default auth((req) => {
+  const role = (req.auth?.user as { role?: string } | undefined)?.role;
+  if (role !== "VIEWER") return;
+
   const { pathname } = req.nextUrl;
+  if (VIEWER_ALLOWED_PATHS.some((p) => pathname === p)) return;
 
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    if (!req.auth) {
-      const loginUrl = new URL("/admin/login", req.url);
-      loginUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-  }
-
-  return NextResponse.next();
+  return NextResponse.redirect(new URL("/admin/attendees", req.url));
 });
 
 export const config = {

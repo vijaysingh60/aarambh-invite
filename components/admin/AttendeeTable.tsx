@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { updateRSVPStatus } from "@/actions/event";
 import { CheckCircle, XCircle, RotateCcw, Search, Filter } from "lucide-react";
+import { deriveBatchFromRoll } from "@/lib/batch";
 import type { IRSVP } from "@/types";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   total: number;
   page: number;
   initialFilters: { status?: string; batch?: string; search?: string };
+  readOnly?: boolean;
 }
 
 const STATUS_LABELS: Record<string, { label: string; classes: string }> = {
@@ -19,7 +21,7 @@ const STATUS_LABELS: Record<string, { label: string; classes: string }> = {
   PENDING: { label: "Pending", classes: "bg-yellow-100 text-yellow-800" },
 };
 
-export default function AttendeeTable({ rsvps, total, page, initialFilters }: Props) {
+export default function AttendeeTable({ rsvps, total, page, initialFilters, readOnly }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [search, setSearch] = useState(initialFilters.search || "");
@@ -95,23 +97,24 @@ export default function AttendeeTable({ rsvps, total, page, initialFilters }: Pr
                 <th className="px-4 py-3 text-left">Mobile</th>
                 <th className="px-4 py-3 text-left">Status</th>
                 <th className="px-4 py-3 text-left">Submitted</th>
-                <th className="px-4 py-3 text-left">Actions</th>
+                {!readOnly && <th className="px-4 py-3 text-left">Actions</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f5f0ea]">
               {rsvps.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-10 text-center text-[#9b7b6b]">
+                  <td colSpan={readOnly ? 6 : 7} className="px-4 py-10 text-center text-[#9b7b6b]">
                     No RSVPs found with these filters.
                   </td>
                 </tr>
               ) : rsvps.map((rsvp) => {
                 const status = STATUS_LABELS[rsvp.status] || { label: rsvp.status, classes: "bg-gray-100 text-gray-800" };
+                const batch = rsvp.batch || deriveBatchFromRoll(rsvp.rollNumber);
                 return (
                   <tr key={rsvp._id} className="hover:bg-[#fdf9f6]">
                     <td className="px-4 py-3 font-medium text-[#1a0a0a]">{rsvp.name}</td>
                     <td className="px-4 py-3 font-mono text-xs text-[#8b1a1a]">{rsvp.rollNumber}</td>
-                    <td className="px-4 py-3 text-[#5c3a2a]">{rsvp.batch ? `MCA ${rsvp.batch}` : "—"}</td>
+                    <td className="px-4 py-3 text-[#5c3a2a]">{batch ? `MCA ${batch}` : "—"}</td>
                     <td className="px-4 py-3 text-[#5c3a2a]">
                       {rsvp.mobile ? (
                         <a href={`tel:${rsvp.mobile}`} className="hover:text-[#8b1a1a]">{rsvp.mobile}</a>
@@ -123,36 +126,40 @@ export default function AttendeeTable({ rsvps, total, page, initialFilters }: Pr
                       </span>
                     </td>
                     <td className="px-4 py-3 text-[#9b7b6b] text-xs">
-                      {new Date(rsvp.submittedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                      {rsvp.submittedAt
+                        ? new Date(rsvp.submittedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
+                        : "Not responded"}
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => handleStatusChange(rsvp.rollNumber, "ATTENDING")}
-                          disabled={updating === rsvp.rollNumber || rsvp.status === "ATTENDING"}
-                          title="Mark Attending"
-                          className="p-1 text-green-600 hover:bg-green-50 rounded disabled:opacity-30 disabled:cursor-not-allowed"
-                        >
-                          <CheckCircle size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleStatusChange(rsvp.rollNumber, "NOT_ATTENDING")}
-                          disabled={updating === rsvp.rollNumber || rsvp.status === "NOT_ATTENDING"}
-                          title="Mark Not Attending"
-                          className="p-1 text-red-600 hover:bg-red-50 rounded disabled:opacity-30 disabled:cursor-not-allowed"
-                        >
-                          <XCircle size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleStatusChange(rsvp.rollNumber, "PENDING")}
-                          disabled={updating === rsvp.rollNumber || rsvp.status === "PENDING"}
-                          title="Reset to Pending"
-                          className="p-1 text-[#9b7b6b] hover:bg-gray-50 rounded disabled:opacity-30 disabled:cursor-not-allowed"
-                        >
-                          <RotateCcw size={14} />
-                        </button>
-                      </div>
-                    </td>
+                    {!readOnly && (
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleStatusChange(rsvp.rollNumber, "ATTENDING")}
+                            disabled={updating === rsvp.rollNumber || rsvp.status === "ATTENDING"}
+                            title="Mark Attending"
+                            className="p-1 text-green-600 hover:bg-green-50 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                          >
+                            <CheckCircle size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange(rsvp.rollNumber, "NOT_ATTENDING")}
+                            disabled={updating === rsvp.rollNumber || rsvp.status === "NOT_ATTENDING"}
+                            title="Mark Not Attending"
+                            className="p-1 text-red-600 hover:bg-red-50 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                          >
+                            <XCircle size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange(rsvp.rollNumber, "PENDING")}
+                            disabled={updating === rsvp.rollNumber || rsvp.status === "PENDING"}
+                            title="Reset to Pending"
+                            className="p-1 text-[#9b7b6b] hover:bg-gray-50 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                          >
+                            <RotateCcw size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 );
               })}

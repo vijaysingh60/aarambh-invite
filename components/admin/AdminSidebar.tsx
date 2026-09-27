@@ -15,7 +15,14 @@ import {
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 
-const navItems = [
+interface NavItem {
+  href: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+}
+
+const navItems: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/attendees", label: "Attendees", icon: UserCheck },
   { href: "/admin/students", label: "Students", icon: Users },
@@ -26,22 +33,28 @@ const navItems = [
   { href: "/admin/audit-logs", label: "Audit Logs", icon: ScrollText },
 ];
 
-export default function AdminSidebar() {
+const viewerNavItems: NavItem[] = [
+  { href: "/admin/attendees", label: "Attendees", icon: UserCheck },
+];
+
+export default function AdminSidebar({ role }: { role?: string }) {
   const pathname = usePathname();
+  const isViewer = role === "VIEWER";
+  const items = isViewer ? viewerNavItems : navItems;
 
   return (
     <aside className="hidden md:flex w-56 lg:w-64 shrink-0 flex-col bg-[#1a0505] min-h-screen">
       {/* Logo */}
       <div className="px-5 py-5 border-b border-[#3a1515]">
-        <Link href="/admin" className="block">
+        <Link href={isViewer ? "/admin/attendees" : "/admin"} className="block">
           <p className="text-[#c9872a] font-bold text-base tracking-widest uppercase">AARAMBH</p>
-          <p className="text-[#9b7b6b] text-xs">Admin Panel</p>
+          <p className="text-[#9b7b6b] text-xs">{isViewer ? "Class Login" : "Admin Panel"}</p>
         </Link>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 py-4 px-3 space-y-0.5">
-        {navItems.map((item) => {
+        {items.map((item) => {
           const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
           return (
             <Link
@@ -66,7 +79,7 @@ export default function AdminSidebar() {
           <span className="text-xs">←</span> Public Site
         </Link>
         <button
-          onClick={() => signOut({ callbackUrl: "/admin/login" })}
+          onClick={() => signOut({ callbackUrl: isViewer ? "/class-login" : "/admin/login" })}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#9b7b6b] hover:text-red-400 transition-colors"
         >
           <LogOut size={17} /> Logout

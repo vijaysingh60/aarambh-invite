@@ -14,7 +14,7 @@ const AdminSchema = new Schema<IAdminDoc>(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true, lowercase: true },
     password: { type: String, required: true, select: false },
-    role: { type: String, enum: ["ADMIN", "SUPER_ADMIN"], default: "ADMIN" },
+    role: { type: String, enum: ["ADMIN", "SUPER_ADMIN", "VIEWER"], default: "ADMIN" },
   },
   { timestamps: true }
 );

@@ -11,7 +11,7 @@ if (!MONGODB_URI) throw new Error("MONGODB_URI not set");
 const [,, name, email, password, role] = process.argv;
 
 if (!name || !email || !password) {
-  console.error("Usage: npx ts-node scripts/create-admin.ts <name> <email> <password> [ADMIN|SUPER_ADMIN]");
+  console.error("Usage: npx ts-node scripts/create-admin.ts <name> <email> <password> [ADMIN|SUPER_ADMIN|VIEWER]");
   process.exit(1);
 }
 
@@ -31,7 +31,7 @@ async function createAdmin() {
     name,
     email,
     password: hashed,
-    role: (role as "ADMIN" | "SUPER_ADMIN") || "ADMIN",
+    role: (role as "ADMIN" | "SUPER_ADMIN" | "VIEWER") || "ADMIN",
   });
 
   console.log(`Admin created: ${name} <${email}> [${role || "ADMIN"}]`);

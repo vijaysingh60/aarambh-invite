@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/mongodb";
 import StudentModel from "@/models/Student";
 import RSVPModel from "@/models/RSVP";
 import { revalidatePath } from "next/cache";
+import { deriveBatchFromRoll } from "@/lib/batch";
 
 export async function submitRSVP(data: {
   name?: string;
@@ -29,7 +30,7 @@ export async function submitRSVP(data: {
 
   // Auto-detect batch and name from student record if available
   const student = await StudentModel.findOne({ rollNumber }).lean();
-  const resolvedBatch = (student as { batch?: string } | null)?.batch || "";
+  const resolvedBatch = deriveBatchFromRoll(rollNumber) || (student as { batch?: string } | null)?.batch || "";
   const resolvedName = data.name?.trim() || (student as { name?: string } | null)?.name || "Unknown";
 
   const existing = await RSVPModel.findOne({ rollNumber });

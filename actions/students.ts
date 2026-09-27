@@ -4,13 +4,14 @@ import { connectDB } from "@/lib/mongodb";
 import StudentModel from "@/models/Student";
 import { StudentImportSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
+import { auth, isViewer } from "@/lib/auth";
 import { createAuditLog } from "@/lib/utils/audit";
 import { z } from "zod";
 
 export async function importStudents(records: unknown[]) {
   const session = await auth();
   if (!session?.user) return { success: false, error: "Unauthorized" };
+  if (isViewer((session.user as { role?: string }).role)) return { success: false, error: "Unauthorized" };
 
   await connectDB();
 
@@ -55,6 +56,7 @@ export async function importStudents(records: unknown[]) {
 export async function deleteStudent(id: string) {
   const session = await auth();
   if (!session?.user) return { success: false, error: "Unauthorized" };
+  if (isViewer((session.user as { role?: string }).role)) return { success: false, error: "Unauthorized" };
 
   await connectDB();
   await StudentModel.findByIdAndDelete(id);
@@ -74,6 +76,7 @@ export async function deleteStudent(id: string) {
 export async function updateStudent(id: string, data: z.infer<typeof StudentImportSchema>) {
   const session = await auth();
   if (!session?.user) return { success: false, error: "Unauthorized" };
+  if (isViewer((session.user as { role?: string }).role)) return { success: false, error: "Unauthorized" };
 
   const validated = StudentImportSchema.safeParse(data);
   if (!validated.success) return { success: false, error: "Invalid data" };

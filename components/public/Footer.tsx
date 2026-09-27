@@ -76,8 +76,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-[#3a1515] text-center text-xs text-[#5c3a2a]">
-          AARAMBH — MCA Freshers&apos;26 · University of Hyderabad · SCIS
+        <div className="mt-10 pt-6 border-t border-[#3a1515] flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 text-center text-xs text-[#5c3a2a]">
+          <span>AARAMBH — MCA Freshers&apos;26 · University of Hyderabad · SCIS</span>
+          <Link href="/class-login" className="text-[#9b7b6b] hover:text-[#c9872a] transition-colors">
+            Organiser Login
+          </Link>
         </div>
       </div>
     </footer>

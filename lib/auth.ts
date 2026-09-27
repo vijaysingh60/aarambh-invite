@@ -15,7 +15,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!credentials?.email || !credentials?.password) return null;
 
         await connectDB();
-        const admin = await AdminModel.findOne({ email: credentials.email }).select("+password");
+        const identifier = (credentials.email as string).trim().toLowerCase();
+        const admin = await AdminModel.findOne({ email: identifier }).select("+password");
 
         if (!admin || !admin.password) return null;
 
@@ -52,3 +53,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
 });
+
+/** VIEWER accounts (class reps) can only view the Attendees page and can never mutate data. */
+export function isViewer(role?: string) {
+  return role === "VIEWER";
+}

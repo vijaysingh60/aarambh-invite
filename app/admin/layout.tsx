@@ -4,11 +4,12 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
+  const role = (session?.user as { role?: string } | undefined)?.role;
 
   // Login page doesn't need the sidebar layout
   return (
     <div className="flex min-h-screen bg-[#f5f3f0]">
-      {session && <AdminSidebar />}
+      {session && <AdminSidebar role={role} />}
       <div className="flex-1 overflow-auto">{children}</div>
     </div>
   );

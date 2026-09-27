@@ -1,6 +1,6 @@
 export type RSVPStatus = "PENDING" | "ATTENDING" | "NOT_ATTENDING";
 export type ContributionStatus = "PENDING" | "VERIFIED" | "REJECTED";
-export type AdminRole = "ADMIN" | "SUPER_ADMIN";
+export type AdminRole = "ADMIN" | "SUPER_ADMIN" | "VIEWER";
 
 export interface IStudent {
   _id: string;
