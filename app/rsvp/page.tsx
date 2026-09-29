@@ -10,7 +10,7 @@ export default async function RSVPPage({ searchParams }: Props) {
   const params = await searchParams;
   const rollParam = params.roll?.toUpperCase();
 
-  let prefillStudent = null;
+  let prefillStudent = null; 
   if (rollParam) {
     prefillStudent = await getStudentByRoll(rollParam);
   }
